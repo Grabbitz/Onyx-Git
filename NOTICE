@@ -1,0 +1,20 @@
+Onyx-Git — a layout for the Herdr desktop app.
+Copyright 2026 Grabbitz. Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This repository includes or derives from:
+
+- mods/t3-agents, t3-chrome, t3-focus, t3-pane, t3-new-menu — copied unchanged from
+  herdr-t3 by JinJieBeWater (https://github.com/JinJieBeWater/herdr-t3), Apache-2.0.
+- mods/onyx-tabs, mods/onyx-spaces — modified from herdr-t3's t3-tabs and t3-spaces
+  (Apache-2.0). Changes: icon-only toolbar with side-panel, pull-request and Insights
+  buttons; per-tab working timer; branch always shown with an icon in the spaces list.
+- herdr-t3 itself starts from Herdr App's shipped mods and layout (Apache-2.0).
+- mods/onyx-status/branch.svg — Herdr App's shipped workspace-chrome icon (Apache-2.0).
+
+Not included, fetched by install.sh from their authors' repositories at install time:
+issues (jankeesvw/herdr-issues), lazygit-panel (o101k/herdr-lazygit),
+git-changes (aBER0724/herdr-git-changes), insights (GaganSD/coding-agent-toolkit),
+gh-prs (mrolafsson/herdr-github). Their own licenses apply.
+
+onyx-quota reads quota through quota-axi (https://github.com/kunchenguid/quota-axi),
+installed separately. Provider icons are Herdr's own shipped icons, not bundled here.

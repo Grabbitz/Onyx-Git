@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 5,
+  "providers": [
+    { "provider": "claude", "state": { "status": "fresh" }, "windows": [
+      { "id": "five_hour", "label": "session", "percentRemaining": 58, "resetsAt": "2030-01-01T05:00:00Z" },
+      { "id": "seven_day", "label": "week", "percentRemaining": 93, "resetsAt": "2030-01-07T00:00:00Z" } ] },
+    { "provider": "grok", "state": { "status": "fresh" }, "windows": [
+      { "id": "credits", "label": "week", "percentRemaining": 74 },
+      { "id": "product:voice", "label": "Voice", "percentRemaining": 98 } ] },
+    { "provider": "cursor", "state": { "status": "auth_required", "error": "keychain_prompt_required" }, "windows": [] },
+    { "provider": "kimi", "notSetUp": true, "state": { "status": "unavailable" }, "windows": [] }
+  ]
+}

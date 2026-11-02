@@ -1,0 +1,7 @@
+{
+  "layout:onyx-git": {
+    "cmd-shift-b": "t3-chrome.sidebar",
+    "cmd-shift-a": "onyx-tabs.view",
+    "cmd-shift-s": "t3-focus.settle"
+  }
+}

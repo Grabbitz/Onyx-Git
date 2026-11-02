@@ -1,0 +1,285 @@
+{
+  "id": "root",
+  "type": "row",
+  "children": [
+    {
+      "id": "sidebar",
+      "type": "column",
+      "children": [
+        {
+          "id": "brand",
+          "type": "block",
+          "content": {
+            "mod": "t3-chrome"
+          },
+          "size": {
+            "px": 40
+          },
+          "window_drag": true
+        },
+        {
+          "id": "sidebar-lists",
+          "type": "stack",
+          "children": [
+            {
+              "id": "lists",
+              "type": "column",
+              "children": [
+                {
+                  "id": "spaces",
+                  "type": "block",
+                  "content": {
+                    "mod": "onyx-spaces"
+                  },
+                  "size": {
+                    "weight": 1
+                  },
+                  "min": 90
+                },
+                {
+                  "id": "agents",
+                  "type": "block",
+                  "content": {
+                    "mod": "t3-agents"
+                  },
+                  "size": {
+                    "weight": 1
+                  },
+                  "min": 90
+                }
+              ]
+            },
+            {
+              "id": "focus",
+              "type": "block",
+              "content": {
+                "mod": "t3-focus",
+                "props": {
+                  "newMenu": "t3-new-menu"
+                }
+              }
+            }
+          ],
+          "active": "lists"
+        },
+        {
+          "id": "sidebar-footer",
+          "type": "block",
+          "content": {
+            "mod": "t3-chrome",
+            "props": {
+              "footer": true
+            }
+          },
+          "size": {
+            "px": 41
+          }
+        }
+      ],
+      "size": {
+        "px": 268
+      },
+      "min": 180,
+      "max": 480,
+      "background": "chrome",
+      "resizable": false
+    },
+    {
+      "id": "work",
+      "type": "column",
+      "children": [
+        {
+          "id": "tabs",
+          "type": "block",
+          "content": {
+            "mod": "onyx-tabs"
+          },
+          "size": {
+            "px": 40
+          },
+          "window_drag": true
+        },
+        {
+          "id": "work-body",
+          "type": "row",
+          "children": [
+            {
+              "id": "view",
+              "type": "stack",
+              "children": [
+                {
+                  "id": "main",
+                  "type": "block",
+                  "content": {
+                    "tab": "active",
+                    "pane": {
+                      "header": {
+                        "content": {
+                          "mod": "t3-pane"
+                        },
+                        "reveal": "always",
+                        "height": 28,
+                        "position": "top"
+                      },
+                      "background": "background",
+                      "border": {
+                        "width": 2,
+                        "color": "background"
+                      },
+                      "focus": {
+                        "width": 2,
+                        "color": "background"
+                      },
+                      "radius": 8,
+                      "gap": 8,
+                      "lone": true
+                    }
+                  }
+                },
+                {
+                  "id": "agent",
+                  "type": "block",
+                  "content": {
+                    "agent": "focused"
+                  },
+                  "background": "background",
+                  "radius": 8
+                }
+              ],
+              "active": "main"
+            },
+            {
+              "id": "panel",
+              "type": "column",
+              "children": [
+                {
+                  "id": "panel-body",
+                  "type": "stack",
+                  "children": [
+                    {
+                      "id": "files",
+                      "type": "block",
+                      "content": {
+                        "mod": "files"
+                      }
+                    },
+                    {
+                      "id": "changes",
+                      "type": "block",
+                      "content": {
+                        "mod": "git-changes"
+                      }
+                    },
+                    {
+                      "id": "issues",
+                      "type": "block",
+                      "content": {
+                        "mod": "issues"
+                      }
+                    },
+                    {
+                      "id": "lazygit",
+                      "type": "column",
+                      "children": [
+                        {
+                          "id": "lazygit-bar",
+                          "type": "block",
+                          "content": {
+                            "mod": "lazygit-panel"
+                          },
+                          "size": {
+                            "px": 30
+                          }
+                        },
+                        {
+                          "id": "lazygit-term",
+                          "type": "block",
+                          "content": {
+                            "terminal": "t19"
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "active": "lazygit"
+                }
+              ],
+              "size": {
+                "px": 368
+              },
+              "min": 280,
+              "max": 900
+            }
+          ],
+          "padding": [
+            2,
+            8
+          ],
+          "gap": 8
+        },
+        {
+          "id": "work-bottom-inset",
+          "type": "row",
+          "children": [],
+          "size": {
+            "px": 6
+          }
+        },
+        {
+          "id": "status",
+          "type": "row",
+          "size": {
+            "px": 28
+          },
+          "resizable": false,
+          "background": "chrome",
+          "children": [
+            {
+              "id": "onyx-status",
+              "type": "block",
+              "content": {
+                "mod": "onyx-status"
+              },
+              "size": {
+                "weight": 1
+              },
+              "min": 120
+            },
+            {
+              "id": "status-usage",
+              "type": "block",
+              "content": {
+                "mod": "onyx-quota"
+              },
+              "size": {
+                "px": 600
+              },
+              "min": 300
+            }
+          ]
+        }
+      ],
+      "resizable": false
+    }
+  ],
+  "background": "canvas",
+  "theme": {
+    "light": "paper",
+    "dark": "onyx-git"
+  },
+  "terminal_padding": [
+    8,
+    0
+  ],
+  "terminal_opacity": 0,
+  "divider": {
+    "width": 1,
+    "color": "border"
+  },
+  "titlebar": "none",
+  "traffic_lights": [
+    16,
+    13
+  ],
+  "preview": "layouts/onyx-git.png"
+}
