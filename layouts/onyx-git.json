@@ -194,8 +194,9 @@
                         {
                           "id": "lazygit-term",
                           "type": "block",
+                          "hidden": true,
                           "content": {
-                            "terminal": "t19"
+                            "terminal": "none"
                           }
                         }
                       ]

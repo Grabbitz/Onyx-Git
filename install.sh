@@ -40,9 +40,11 @@ if [ "$DEPS" = 1 ]; then
   fetch aBER0724/herdr-git-changes && copy_dir "$TMP/herdr-git-changes/mods/git-changes" git-changes no || true
   fetch GaganSD/coding-agent-toolkit && copy_dir "$TMP/coding-agent-toolkit/herdr-insights/mods/insights" insights no || true
   if fetch o101k/herdr-lazygit && copy_dir "$TMP/herdr-lazygit/mods/lazygit-panel" lazygit-panel no; then
-    # lazygit-panel only acts inside its own "lazygit" layout; let it act in onyx-git too.
+    # lazygit-panel only acts inside its own "lazygit" layout; let it act in onyx-git too,
+    # and put its terminal block back whenever the app drops it (upstream only heals a missing panel).
     sed -i.bak -e 's/shared("layout") === "lazygit"/["lazygit", "onyx-git"].includes(shared("layout"))/' \
       -e 's/shared("layout") !== "lazygit"/!["lazygit", "onyx-git"].includes(shared("layout"))/' \
+      -e 's/if (onLazygit \&\& !panel) this.heal(root);/if (onLazygit \&\& (!panel || !find(root, TERM))) this.heal(root);/' \
       "$HOME_DIR/mods/lazygit-panel/main.js" && rm -f "$HOME_DIR/mods/lazygit-panel/main.js.bak"
   fi
   # herdr-github installs as "gh-prs": the name "github" is often taken.
