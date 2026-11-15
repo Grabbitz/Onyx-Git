@@ -1,5 +1,5 @@
 import { View, div, svg, image } from "gpui-kit";
-import { h_flex } from "gpui-base";
+import { h_flex, ScrollHandle } from "gpui-base";
 import { spaces, panes, agents, terminals, focused, run, openOverlay, theme, window, layout, settings, nextCommand } from "herdr";
 import { namer } from "./name.js";
 
@@ -40,11 +40,12 @@ function find(node, id) {
 export default class Tabs extends View {
   init(_props, cx) {
     this.pressed = null;
+    this.scroll = ScrollHandle.new();
     // Redraw once a second, only while a shown tab's agent is working.
     cx.timer.every(1000, (cx) => {
       if (spaces().find(p => p.active)?.tabs.some(c => c.working_since)) cx.notify();
     });
-    // `t3-tabs.view` (cmd-shift-a in keys.json) switches between the tabs and the agent view.
+    // `onyx-tabs.view` (cmd-shift-a in keys.json) switches between the tabs and the agent view.
     cx.spawn(async (cx) => {
       for (;;) {
         if (await nextCommand() === "view" && find(layout(), "view")) switchView();
@@ -87,6 +88,9 @@ export default class Tabs extends View {
     const space = spaces().find(p => p.active);
     const shown = space?.tabs ?? [];
     const live = awake();
+    // With many tabs, keep the active one in view.
+    const active = shown.findIndex(c => c.active);
+    if (shown[active]?.id !== this.selected) { this.selected = shown[active]?.id; if (active >= 0) this.scroll.scroll_to_item(active); }
     const ps = panes(), title = namer();
     // The agent view keeps the keyboard on its agent, so a split or new tab would land unseen.
     // A new shell or mod pane in this space brings the tabs back, focused; a new agent's (often an agent
@@ -157,7 +161,7 @@ export default class Tabs extends View {
       .on_scroll_wheel(e => { if (Math.abs(e.delta.y) >= 1) run(e.delta.y > 0 ? (agentView() ? "agent.prev" : "tab.prev") : (agentView() ? "agent.next" : "tab.next")); })
       .when(Boolean(sidebar?.hidden), el => el.child(this.sidebarToggle(t, stop)))
       .child(agentView() ? this.agentBar(t, title, live)
-        : h_flex().id("tab-scroll").flex_1().min_w(0).h_full().items_center().gap(4).overflow_x_scroll().children(shown.map(item)))
+        : h_flex().id("tab-scroll").flex_1().min_w(0).h_full().items_center().gap(4).overflow_x_scroll().track_scroll(this.scroll).children(shown.map(item)))
       .when(Boolean(find(root, "view")), el => el.child(tool("view-toggle", agentView() ? "Show tabs" : "Show one agent",
         `mods/workspace-chrome/${agentView() ? "layers" : "square"}.svg`, false, switchView)))
       .child(tool("tab-new", "New", "mods/workspace-chrome/plus.svg", false, () => run("mod.open", { name: "t3-new-menu" })))

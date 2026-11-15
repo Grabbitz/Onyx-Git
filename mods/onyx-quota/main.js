@@ -93,7 +93,7 @@ async function read(ids, allowKeychain) {
   if (!run) return Object.fromEntries(ids.map(id => [id, { windows: [], error: "quota-axi not found · npm i -g quota-axi" }]));
   const args = [run[1], "--provider", ids.join(","), "--json", "--max-age", "60s"];
   if (allowKeychain) args.push("--allow-keychain-prompt");
-  const r = await exec(run[0], args).catch(e => ({ code: 1, stdout: "", stderr: String(e) }));
+  const r = await exec(run[0], args, { timeout: allowKeychain ? 180000 : 60000 }).catch(e => ({ code: 1, stdout: "", stderr: String(e) }));
   try { return parse(r.stdout); } catch (_) {
     return Object.fromEntries(ids.map(id => [id, { windows: [], error: "quota-axi failed" }]));
   }

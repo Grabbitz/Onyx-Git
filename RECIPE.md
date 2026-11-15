@@ -17,10 +17,10 @@ Left to right, top to bottom:
 ## How it behaves
 
 - **Agent statuses:** working = spinner (`working`, spin 900 ms) and a live clock; blocked = red "!" badge; done = green dot; idle = hollow ring. Clicking the strip's agent part runs `agent.focus` on the blocked agent, else the longest-working, else a done, else an idle one.
-- **Git strip** reads `git status --porcelain=v2 --branch` in `focused().cwd` (on the space's machine) when the focused folder changes and every 5 s.
+- **Git strip** reads `git status --porcelain=v2 --branch` in `focused().cwd` (on the space's machine) when the focused folder changes and every 5 s while `window().active`. The spaces list reads refs only (`rev-parse`, `symbolic-ref`, `rev-list --left-right --count HEAD...@{upstream}`), all spaces in parallel, and again when a repo's `.git` changes.
 - **Quota** polls once per 2 min: `node quota-axi --provider <enabled> --json --max-age 60s`. First run enables every provider quota-axi reports as set up. Hover a chip for every window with its reset countdown; click for the overview popup (400px wide, providers sorted by their tightest window, each window a 170×5 bar); a provider whose read needs the Keychain shows **Allow Keychain**, which re-reads it with `--allow-keychain-prompt`. The settings popup lists every provider with a switch and its tightest %, and a Used/Left segmented control; the mode changes every number and bar, colours always follow % used.
 - **Side panel buttons** run `layout.select {stack: "panel-body", child}` + `layout.show {id: "panel"}`, or `layout.hide` when already open. Pull requests runs `mod.open gh-prs`; Insights focuses this space's Insights tab or opens one (`tab.new {mod: "insights"}`).
-- Keys (`layout:onyx-git`): `cmd-shift-b` t3-chrome.sidebar, `cmd-shift-a` onyx-tabs.view, `cmd-shift-s` t3-focus.settle.
+- Keys (`layout:onyx-git`): `cmd-shift-b` t3-chrome.sidebar, `cmd-shift-a` onyx-tabs.view, `cmd-alt-b` layout.toggle:panel, `cmd-shift-s` t3-focus.settle.
 
 ## Built from
 
@@ -33,6 +33,7 @@ Left to right, top to bottom:
 
 ## Watch out
 
+- Needs Herdr 0.1.15: the tab bar keeps the active tab in view with `ScrollHandle`; the Keychain read passes `exec` a 3 min `timeout` (the default 30 s ends before the person answers the prompt).
 - Herdr's `exec` PATH often lacks nvm/volta: onyx-quota asks `$SHELL -lic "command -v node; command -v quota-axi"` once and runs `node <quota-axi.js>` directly.
 - A mod whose `mod.json` says `"place": "right"` gets docked into whatever layout is showing when it is first seen; Onyx-Git's mods all say `"none"`.
 - `herdr-app check` only renders a mod's default view — check `overview` and `picker` by forcing `this.view`.

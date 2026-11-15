@@ -3,7 +3,7 @@
 // Shown only when there is something to say; quota lives in onyx-quota on the right.
 import { View, div, svg } from "gpui-kit";
 import { h_flex } from "gpui-base";
-import { exec, spaces, agents, focused, run, theme, home } from "herdr";
+import { exec, spaces, agents, focused, run, theme, home, window } from "herdr";
 
 // 42s, 3:07, 1:02:09
 function elapsed(since) {
@@ -38,9 +38,10 @@ export default class StatusLeft extends View {
   init(_props, cx) {
     this.git = null; // { cwd, branch, ahead, behind, changed } or null outside a repo
     this.cwd = undefined;
-    // Git can change without Herdr knowing (a commit in the shell): look again every 5 s.
+    // Git can change without Herdr knowing (a commit in the shell): look again every 5 s,
+    // while the window is in front.
     // The clock only needs a redraw while something is working.
-    cx.timer.every(5000, cx => this.look(cx, true));
+    cx.timer.every(5000, cx => { if (window()?.active !== false) this.look(cx, true); });
     cx.timer.every(1000, cx => { if (spaces().some(s => s.tabs.some(t => t.working_since))) cx.notify(); });
   }
 

@@ -46,6 +46,7 @@ if [ "$DEPS" = 1 ]; then
       -e 's/shared("layout") !== "lazygit"/!["lazygit", "onyx-git"].includes(shared("layout"))/' \
       -e 's/if (onLazygit \&\& !panel) this.heal(root);/if (onLazygit \&\& (!panel || !find(root, TERM))) this.heal(root);/' \
       "$HOME_DIR/mods/lazygit-panel/main.js" && rm -f "$HOME_DIR/mods/lazygit-panel/main.js.bak"
+    [ "$(grep -c 'onyx-git\|find(root, TERM))) this.heal' "$HOME_DIR/mods/lazygit-panel/main.js")" -ge 3 ] || say "WARN   lazygit-panel changed upstream: the Lazygit panel may stay empty in onyx-git"
   fi
   # herdr-github installs as "gh-prs": the name "github" is often taken.
   if fetch mrolafsson/herdr-github && copy_dir "$TMP/herdr-github/app/mods/github" gh-prs no; then

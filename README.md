@@ -25,7 +25,7 @@ herdr-app do layout.switch --name onyx-git
 
 The installer copies the layout, theme and mods into `~/.config/herdr-app` (or `$HERDR_APP_HOME`), fetches the panels it uses from their authors' repos, merges `keys.json`, and runs `herdr-app check` on every mod. It never overwrites a mod it didn't put there; Onyx-Git's own `onyx-*` mods are updated in place, so `git pull && ./install.sh` updates it. `ctrl-shift-l` switches back to any other layout.
 
-**Needs:** Herdr, `git`, `python3`. For the panels: [`quota-axi`](https://github.com/kunchenguid/quota-axi) (`npm i -g quota-axi`), [`lazygit`](https://github.com/jesseduffield/lazygit), and the GitHub CLI `gh` signed in.
+**Needs:** Herdr 0.1.15 or newer, `git`, `python3`. For the panels: [`quota-axi`](https://github.com/kunchenguid/quota-axi) (`npm i -g quota-axi`), [`lazygit`](https://github.com/jesseduffield/lazygit), and the GitHub CLI `gh` signed in.
 
 **Keychain (macOS):** Claude Code, Cursor and Copilot keep their sign-in in the Keychain. Click the provider in the quota overview → **Allow Keychain** → *Always Allow*, once.
 
@@ -35,11 +35,12 @@ The installer copies the layout, theme and mods into `~/.config/herdr-app` (or `
 | --- | --- |
 | `cmd-shift-b` | Sidebar: Spaces + Agents ↔ Focus |
 | `cmd-shift-a` | Agent view on/off |
+| `cmd-alt-b` | Side panel on/off |
 | `cmd-shift-s` | Settle the agent in view (Focus) |
 
 ## What it runs
 
-- `onyx-spaces`, `onyx-status`: read-only `git status` / `git rev-parse` in your spaces' folders.
+- `onyx-spaces`: read-only `git rev-parse` / `symbolic-ref` / `rev-list` in your spaces' folders. `onyx-status`: read-only `git status` in the focused folder, every 5 s while the window is in front.
 - `onyx-quota`: `quota-axi --json` every 2 minutes (one call for all providers). quota-axi reads each agent's local sign-in and asks that provider's own usage endpoint; nothing goes anywhere else. It finds `node` and `quota-axi` through your login shell once.
 - The fetched panels run what their READMEs say (`gh`, `lazygit`, `git`, a local Node helper for Insights).
 

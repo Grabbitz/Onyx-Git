@@ -209,7 +209,8 @@
                 "px": 368
               },
               "min": 280,
-              "max": 900
+              "max": 900,
+              "hidden": true
             }
           ],
           "padding": [
