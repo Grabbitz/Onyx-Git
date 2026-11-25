@@ -15,6 +15,8 @@ A git-first layout for the [Herdr](https://herdr.dev) desktop app: your coding a
 - **Tabs with timers.** A tab whose agent is working shows how long it has been at it.
 - **Onyx theme.** A deep blue-black dark theme (light mode falls back to Herdr's Paper).
 
+![The Pull requests page](preview-prs.png)
+
 ## Install
 
 ```sh
