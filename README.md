@@ -26,9 +26,9 @@ cd Onyx-Git
 herdr-app do layout.switch --name onyx-git
 ```
 
-The installer copies the layout, theme and mods into `~/.config/herdr-app` (or `$HERDR_APP_HOME`), fetches the panels it uses from their authors' repos, merges `keys.json`, and runs `herdr-app check` on every mod. It never overwrites a mod it didn't put there; Onyx-Git's own `onyx-*` mods are updated in place, so `git pull && ./install.sh` updates it. `ctrl-shift-l` switches back to any other layout.
+The installer copies the layout, theme and mods into `~/.config/herdr-app` (or `$HERDR_APP_HOME`), fetches the panels it uses from their authors' repos, merges `keys.json`, and runs `herdr-app check` on every mod. It never overwrites a mod it didn't put there; Onyx-Git's own `onyx-*` mods are updated in place, so `git pull && ./install.sh` updates it. The Lazygit panel is gone (open a terminal beside your work instead); an old install keeps an unused `mods/lazygit-panel` you can delete. `ctrl-shift-l` switches back to any other layout.
 
-**Needs:** Herdr 0.1.15 or newer, `git`, `python3`. For the panels: [`quota-axi`](https://github.com/kunchenguid/quota-axi) (`npm i -g quota-axi`), and the GitHub CLI `gh` signed in (`gh auth login`), which the Issues panel and the Pull requests page both use. The Pull requests page borrows its icons from the `gh-prs` mod, which the installer fetches: with `--no-deps` they are missing unless you already have it.
+**Needs:** Herdr 0.1.15 or newer, `git`, `python3`. For the panels: [`quota-axi`](https://github.com/kunchenguid/quota-axi) (`npm i -g quota-axi`) and the GitHub CLI `gh` signed in (`gh auth login`), which the Issues panel and the Pull requests page both use. The Pull requests page borrows its icons from the `gh-prs` mod, which the installer fetches: with `--no-deps` they are missing unless you already have it.
 
 **Keychain (macOS):** Claude Code, Cursor and Copilot keep their sign-in in the Keychain. Click the provider in the quota overview → **Allow Keychain** → *Always Allow*, once.
 
