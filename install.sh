@@ -29,7 +29,7 @@ cp "$SRC/layouts/onyx-git.json" "$SRC/layouts/onyx-git.png" "$HOME_DIR/layouts/"
 cp "$SRC/themes/onyx-git.json" "$HOME_DIR/themes/"; say "copy   themes/onyx-git.json"
 
 # Onyx-Git's own mods are updated in place; the bundled herdr-t3 mods are only added when missing.
-for m in onyx-tabs onyx-spaces onyx-status onyx-quota; do copy_dir "$SRC/mods/$m" "$m" yes; done
+for m in onyx-tabs onyx-spaces onyx-status onyx-quota onyx-prs; do copy_dir "$SRC/mods/$m" "$m" yes; done
 for m in t3-agents t3-chrome t3-focus t3-pane t3-new-menu; do copy_dir "$SRC/mods/$m" "$m" no || true; done
 
 if [ "$DEPS" = 1 ]; then
@@ -71,7 +71,7 @@ PY
 
 if command -v herdr-app >/dev/null; then
   echo "Checking mods:"
-  for m in onyx-tabs onyx-spaces onyx-status onyx-quota t3-agents t3-chrome t3-focus t3-pane t3-new-menu \
+  for m in onyx-tabs onyx-spaces onyx-status onyx-quota onyx-prs t3-agents t3-chrome t3-focus t3-pane t3-new-menu \
            issues git-changes insights lazygit-panel gh-prs; do
     [ -d "$HOME_DIR/mods/$m" ] && { herdr-app check "$HOME_DIR/mods/$m" >/dev/null 2>&1 && say "ok     $m" || say "FAILED $m (herdr-app check $HOME_DIR/mods/$m)"; }
   done

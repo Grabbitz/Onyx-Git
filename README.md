@@ -7,8 +7,9 @@ A git-first layout for the [Herdr](https://herdr.dev) desktop app: your coding a
 ## What's in it
 
 - **Spaces with their branch.** Every space shows its branch with a branch icon, `main` included, plus ahead/behind.
-- **One quiet toolbar.** Icon-only buttons, names on hover, in three groups: tabs (agent view, new) · side panels (Files, Changes, Lazygit, Issues) · Pull requests and Insights.
+- **One quiet toolbar.** Icon-only buttons, names on hover, in three groups: tabs (agent view, new) · Files, Changes, Pull requests, Issues · Lazygit and Insights.
 - **Side panel.** Files, a Zed-style git panel (stage, commit, stash, push, commit graph), a live lazygit per space, and the repo's GitHub issues.
+- **Pull requests page, T3-style.** The toolbar's PR button swaps the work area for your pull requests: Authored and Review requested, searchable (`label:bug` works), with Sort, Filters (state, hide drafts) and a scope switch (all repos / the focused folder's repo). Pick one for its Summary (reviewers, labels, description, checks), Timeline (comments, reviews, commits) or Code (the diff). **Check out** runs `gh pr checkout` in the focused folder; the `gh pr checkout 41` line copies on click. Click a tab, or the button again, to go back.
 - **Bottom-left: where you are and what's running.** The focused pane's folder, branch, ↑ahead ↓behind and changed files; then `2 working 12:04` (with the longest-running agent's clock), `1 needs you`, `done` and `idle`. Click it to jump to the agent that needs you.
 - **Bottom-right: quota, Orca-style.** One slim bar and percentage per provider — Claude, Codex, Cursor, Copilot, Antigravity, Grok, Kimi, OpenCode, Z.AI and more. Hover for every window and its reset; click for an overview sorted tightest first; the slider button picks providers and switches between **% used** and **% left**. Amber from 80 % used, red from 95 %.
 - **Tabs with timers.** A tab whose agent is working shows how long it has been at it.
@@ -41,6 +42,7 @@ The installer copies the layout, theme and mods into `~/.config/herdr-app` (or `
 ## What it runs
 
 - `onyx-spaces`: read-only `git rev-parse` / `symbolic-ref` / `rev-list` in your spaces' folders. `onyx-status`: read-only `git status` in the focused folder, every 5 s while the window is in front.
+- `onyx-prs`: `gh api graphql` (your PR lists, every minute while the page is open), `gh pr view` / `gh pr diff` for the one you pick, `gh pr checkout` when you press Check out. Nothing else leaves your machine.
 - `onyx-quota`: `quota-axi --json` every 2 minutes (one call for all providers). quota-axi reads each agent's local sign-in and asks that provider's own usage endpoint; nothing goes anywhere else. It finds `node` and `quota-axi` through your login shell once.
 - The fetched panels run what their READMEs say (`gh`, `lazygit`, `git`, a local Node helper for Insights).
 

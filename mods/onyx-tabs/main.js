@@ -19,6 +19,7 @@ const mark = (t, s) => s === "working" ? svg("mods/workspace-chrome/spinner.svg"
 
 // The work area is a stack in the layout: the active tab ("main"), or one agent full size ("agent").
 const agentView = () => find(layout(), "view")?.active === "agent";
+const prsView = () => find(layout(), "view")?.active === "prs";
 const switchView = () => run("layout.select", { stack: "view", child: agentView() ? "main" : "agent" });
 
 // How long a tab's agent has been working: 42s, 3:07, 1:02:09 (from tabs-timer).
@@ -102,6 +103,8 @@ export default class Tabs extends View {
     const here = new Set(spaces().find(s => s.id === f?.space)?.tabs.map(c => c.id) ?? []);
     const moved = f?.pane && this.lastPane && f.pane !== this.lastPane ? ps.find(p => p.pane === f.pane) : null;
     if (f?.pane) this.lastPane = f.pane;
+    // A new tab, shell or mod pane in this space would land behind the Pull requests page: show it.
+    if (prsView() && fresh.some(p => here.has(p.tab) && !isAgent(p))) run("layout.select", { stack: "view", child: "main" });
     if (agentView()) {
       const plain = fresh.find(p => here.has(p.tab) && !isAgent(p)) ?? (moved && !isAgent(moved) ? moved : null);
       if (plain) {
@@ -125,7 +128,7 @@ export default class Tabs extends View {
         .on_mouse_up("left", () => {
           const from = this.pressed; this.pressed = null;
           if (from !== null && from !== i) run("tab.move", { id: shown[from].id, index: space.tabs.findIndex(x => x.id === c.id) + 1 });
-          else run("tab.select", { id: c.id });
+          else { if (prsView()) run("layout.select", { stack: "view", child: "main" }); run("tab.select", { id: c.id }); }
         })
         .on_mouse_down("right", (_e, cx) => { cx.stop_propagation(); openOverlay({ mod: "menu", kind: "popup", width: 200, props: { tab: "tab", target: { id: c.id, space: space.id } } }); })
         .when(Boolean(program?.icon), el => el.child(program.tint ? svg(program.icon).size(14).text_color(t.muted) : image(program.icon).size(14)))
@@ -169,11 +172,15 @@ export default class Tabs extends View {
       .when(Boolean(panel), el => el.child(sep())
         .child(panelButton("files", "Files", "mods/files/file.svg"))
         .child(panelButton("changes", "Changes", "mods/changes/changes.svg"))
-        .when(Boolean(find(root, "lazygit")), el => el.child(panelButton("lazygit", "Lazygit", "mods/git-changes/icons/branch.svg")))
+        .child(tool("prs-open", "Pull requests", "mods/gh-prs/icons/pr.svg", prsView(), () => {
+          // The page in the work area (onyx-prs), or herdr-github's popup if the layout predates it.
+          if (!find(root, "prs")) return run("mod.open", { name: "gh-prs" });
+          run("layout.select", { stack: "view", child: prsView() ? "main" : "prs" });
+        }))
         .child(panelButton("issues", "Issues", "data/issues/icons/issue.svg")))
       .child(sep())
-      // Pull requests (herdr-github, installed as gh-prs): a popup.
-      .child(tool("prs-open", "Pull requests", "mods/gh-prs/icons/pr.svg", false, () => run("mod.open", { name: "gh-prs" })))
+      // Lazygit, in the side panel.
+      .when(Boolean(find(root, "lazygit")), el => el.child(panelButton("lazygit", "Lazygit", "mods/git-changes/icons/branch.svg")))
       // Insights opens as a tab: one per space, focused if already open.
       .child(tool("insights-open", "Insights", "mods/insights/insights.svg",
         ps.some(p => p.mod === "insights" && p.focused), () => {

@@ -144,6 +144,15 @@
                   },
                   "background": "background",
                   "radius": 8
+                },
+                {
+                  "id": "prs",
+                  "type": "block",
+                  "content": {
+                    "mod": "onyx-prs"
+                  },
+                  "background": "background",
+                  "radius": 8
                 }
               ],
               "active": "main"

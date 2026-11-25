@@ -9,7 +9,7 @@ A git-first Herdr layout: spaces and agents on the left, the active tab's termin
 Left to right, top to bottom:
 
 - **Sidebar, 268px, `chrome`.** herdr-t3's chrome (40px brand row with the Focus/Spaces switch and hide button), then Spaces over Agents (or the Focus list), then a 41px footer. Each space row ends with `⑂ <branch>` in 11px `dim` — the branch icon `mods/workspace-chrome/branch.svg` at 11px, `main`/`master` included; ahead `↑n` in `ansi2`, behind `↓n` in `ansi1`.
-- **Tab bar, 40px, `chrome`.** Pill tabs (28px, radius 6, `selected` when active). A working tab shows a spinner and its elapsed working time (`42s`, `3:07`, `1:02:09`) in 11.5px `working`. On the right, icon-only 26px buttons (15px icons, `dim`, `hover` background, tooltip names): Agent view · New │ Files · Changes · Lazygit · Issues │ Pull requests · Insights. Groups are split by a 1×14px `border` hairline. The button of the open side panel sits on `selected`.
+- **Tab bar, 40px, `chrome`.** Pill tabs (28px, radius 6, `selected` when active). A working tab shows a spinner and its elapsed working time (`42s`, `3:07`, `1:02:09`) in 11.5px `working`. On the right, icon-only 26px buttons (15px icons, `dim`, `hover` background, tooltip names): Agent view · New │ Files · Changes · Pull requests · Issues │ Lazygit · Insights. Groups are split by a 1×14px `border` hairline. The button of the open side panel sits on `selected`.
 - **Work area.** herdr-t3's framed panes (radius 8, 28px header) in a stack with the one-agent view; padding [2, 8], gap 8.
 - **Side panel, 368px (280–900), hidden by default.** A stack: `files`, `changes` (git-changes), `lazygit` (a 30px lazygit-panel bar over a terminal block), `issues`.
 - **Bottom strip, 28px, `chrome`, no border.** Left block (weight 1): `Collab/project ⑂ main ↑2 • 3` in 11px `muted` (the dot is 5px `ansi3`), a 1×12 hairline, then agents: spinner + `2 working` + the longest clock in `dim`; a 14px `blocked` "!" badge + `1 needs you` in `blocked`; a 6px `done` dot + `n done`; a 7px hollow `dim` ring + `n idle`. Parts with nothing to say are absent. Right block (600px): per enabled provider a 22px chip — 12px icon, 24×3 bar, 28px-wide % in 11px `muted` (amber `ansi3` ≥ 80 % used, `blocked` ≥ 95 %) — then a hairline, then 22px refresh and settings buttons with 13px stroke icons, `dim`.
@@ -19,7 +19,7 @@ Left to right, top to bottom:
 - **Agent statuses:** working = spinner (`working`, spin 900 ms) and a live clock; blocked = red "!" badge; done = green dot; idle = hollow ring. Clicking the strip's agent part runs `agent.focus` on the blocked agent, else the longest-working, else a done, else an idle one.
 - **Git strip** reads `git status --porcelain=v2 --branch` in `focused().cwd` (on the space's machine) when the focused folder changes and every 5 s while `window().active`. The spaces list reads refs only (`rev-parse`, `symbolic-ref`, `rev-list --left-right --count HEAD...@{upstream}`), all spaces in parallel, and again when a repo's `.git` changes.
 - **Quota** polls once per 2 min: `node quota-axi --provider <enabled> --json --max-age 60s`. First run enables every provider quota-axi reports as set up. Hover a chip for every window with its reset countdown; click for the overview popup (400px wide, providers sorted by their tightest window, each window a 170×5 bar); a provider whose read needs the Keychain shows **Allow Keychain**, which re-reads it with `--allow-keychain-prompt`. The settings popup lists every provider with a switch and its tightest %, and a Used/Left segmented control; the mode changes every number and bar, colours always follow % used.
-- **Side panel buttons** run `layout.select {stack: "panel-body", child}` + `layout.show {id: "panel"}`, or `layout.hide` when already open. Pull requests runs `mod.open gh-prs`; Insights focuses this space's Insights tab or opens one (`tab.new {mod: "insights"}`).
+- **Side panel buttons** run `layout.select {stack: "panel-body", child}` + `layout.show {id: "panel"}`, or `layout.hide` when already open. Pull requests toggles the `view` stack between `main` and `prs` (the `onyx-prs` page; a tab click or a new tab goes back to `main`); Insights focuses this space's Insights tab or opens one (`tab.new {mod: "insights"}`).
 - Keys (`layout:onyx-git`): `cmd-shift-b` t3-chrome.sidebar, `cmd-shift-a` onyx-tabs.view, `cmd-alt-b` layout.toggle:panel, `cmd-shift-s` t3-focus.settle.
 
 ## Built from
@@ -28,6 +28,7 @@ Left to right, top to bottom:
 - `themes/onyx-git.json`: background `#141519`, canvas `#0f1013`, chrome `#0c0d10`, accent `#8b95ab`, working `#7aa2f7`, blocked `#f07178`, done `#8bd49c`.
 - `mods/onyx-tabs`, `mods/onyx-spaces`: herdr-t3's t3-tabs and t3-spaces with the changes above. `mods/t3-*`: herdr-t3, unchanged.
 - `mods/onyx-status`: `exec`, `spaces`, `agents`, `focused`, `run`, `theme`, `home`; a 5 s git timer and a 1 s redraw only while a tab has `working_since`.
+- `mods/onyx-prs`: a block `prs` in the `view` stack: a 430px list (search, Sort / Filters / scope, Authored and Review requested via one `gh api graphql`) and a detail pane (header, Summary / Timeline / Code from `gh pr view` / `gh pr diff`). Pure parsers are tested in `tests/onyx-prs.test.mjs`. Icons from `mods/gh-prs/icons`.
 - `mods/onyx-quota`: one view, `props().view` = none (strip) / `"overview"` / `"picker"`; shared keys `onyx-quota.data`, `onyx-quota.on`, `onyx-quota.mode`. Only the strip polls. Icons from Herdr's `icons/`.
 - Fetched by `install.sh`: `issues`, `git-changes`, `insights`, `lazygit-panel` (its layout-name check widened to `onyx-git`), `herdr-github`'s app mod installed as `gh-prs` (asset and back-link paths renamed).
 
@@ -42,6 +43,6 @@ Left to right, top to bottom:
 
 ## Done when
 
-- `./install.sh` into an empty `HERDR_APP_HOME` copies 4 onyx mods, 5 t3 mods and 5 fetched panels, and every `herdr-app check` passes.
-- `node tests/onyx-quota.test.mjs` and `node tests/onyx-status.test.mjs` pass.
+- `./install.sh` into an empty `HERDR_APP_HOME` copies 5 onyx mods, 5 t3 mods and 5 fetched panels, and every `herdr-app check` passes.
+- `node tests/onyx-quota.test.mjs`, `node tests/onyx-status.test.mjs` and `node tests/onyx-prs.test.mjs` pass.
 - In the app: spaces show `⑂ main`; the toolbar has 8 icon buttons in 3 groups; each panel button opens its page; the bottom-left shows the focused repo's branch and changed count and, with an agent working, its clock; the bottom-right shows one chip per set-up provider and the Used/Left switch flips every number.
