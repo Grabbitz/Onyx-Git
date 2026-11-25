@@ -9,9 +9,9 @@ A git-first Herdr layout: spaces and agents on the left, the active tab's termin
 Left to right, top to bottom:
 
 - **Sidebar, 268px, `chrome`.** herdr-t3's chrome (40px brand row with the Focus/Spaces switch and hide button), then Spaces over Agents (or the Focus list), then a 41px footer. Each space row ends with `⑂ <branch>` in 11px `dim` — the branch icon `mods/workspace-chrome/branch.svg` at 11px, `main`/`master` included; ahead `↑n` in `ansi2`, behind `↓n` in `ansi1`.
-- **Tab bar, 40px, `chrome`.** Pill tabs (28px, radius 6, `selected` when active). A working tab shows a spinner and its elapsed working time (`42s`, `3:07`, `1:02:09`) in 11.5px `working`. On the right, icon-only 26px buttons (15px icons, `dim`, `hover` background, tooltip names): Agent view · New │ Files · Changes · Pull requests · Issues │ Lazygit · Insights. Groups are split by a 1×14px `border` hairline. The button of the open side panel sits on `selected`.
+- **Tab bar, 40px, `chrome`.** Pill tabs (28px, radius 6, `selected` when active). A working tab shows a spinner and its elapsed working time (`42s`, `3:07`, `1:02:09`) in 11.5px `working`. On the right, icon-only 26px buttons (15px icons, `dim`, `hover` background, tooltip names): Agent view · New │ Files · Changes · Pull requests · Issues │ Insights. Groups are split by a 1×14px `border` hairline. The button of the open side panel sits on `selected`.
 - **Work area.** herdr-t3's framed panes (radius 8, 28px header) in a stack with the one-agent view; padding [2, 8], gap 8.
-- **Side panel, 368px (280–900), hidden by default.** A stack: `files`, `changes` (git-changes), `lazygit` (a 30px lazygit-panel bar over a terminal block), `issues`.
+- **Side panel, 368px (280–900), hidden by default.** A stack: `files`, `changes` (git-changes), `issues`.
 - **Bottom strip, 28px, `chrome`, no border.** Left block (weight 1): `Collab/project ⑂ main ↑2 • 3` in 11px `muted` (the dot is 5px `ansi3`), a 1×12 hairline, then agents: spinner + `2 working` + the longest clock in `dim`; a 14px `blocked` "!" badge + `1 needs you` in `blocked`; a 6px `done` dot + `n done`; a 7px hollow `dim` ring + `n idle`. Parts with nothing to say are absent. Right block (600px): per enabled provider a 22px chip — 12px icon, 24×3 bar, 28px-wide % in 11px `muted` (amber `ansi3` ≥ 80 % used, `blocked` ≥ 95 %) — then a hairline, then 22px refresh and settings buttons with 13px stroke icons, `dim`.
 
 ## How it behaves
@@ -30,7 +30,7 @@ Left to right, top to bottom:
 - `mods/onyx-status`: `exec`, `spaces`, `agents`, `focused`, `run`, `theme`, `home`; a 5 s git timer and a 1 s redraw only while a tab has `working_since`.
 - `mods/onyx-prs`: a block `prs` in the `view` stack: a 430px list (search, Sort / Filters / scope, Authored and Review requested via one `gh api graphql`) and a detail pane (header, Summary / Timeline / Code from `gh pr view` / `gh pr diff`). Pure parsers are tested in `tests/onyx-prs.test.mjs`. Icons from `mods/gh-prs/icons`.
 - `mods/onyx-quota`: one view, `props().view` = none (strip) / `"overview"` / `"picker"`; shared keys `onyx-quota.data`, `onyx-quota.on`, `onyx-quota.mode`. Only the strip polls. Icons from Herdr's `icons/`.
-- Fetched by `install.sh`: `issues`, `git-changes`, `insights`, `lazygit-panel` (its layout-name check widened to `onyx-git`), `herdr-github`'s app mod installed as `gh-prs` (asset and back-link paths renamed).
+- Fetched by `install.sh`: `issues`, `git-changes`, `insights`, `herdr-github`'s app mod installed as `gh-prs` (asset and back-link paths renamed).
 
 ## Watch out
 
@@ -39,7 +39,6 @@ Left to right, top to bottom:
 - A mod whose `mod.json` says `"place": "right"` gets docked into whatever layout is showing when it is first seen; Onyx-Git's mods all say `"none"`.
 - `herdr-app check` only renders a mod's default view — check `overview` and `picker` by forcing `this.view`.
 - `flex_shrink` takes a value; a local variable named like a module helper shadows it inside `render`.
-- lazygit-panel only acts while `shared("layout")` is one it knows.
 
 ## Done when
 

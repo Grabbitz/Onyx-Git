@@ -39,15 +39,6 @@ if [ "$DEPS" = 1 ]; then
   fetch jankeesvw/herdr-issues && copy_dir "$TMP/herdr-issues/mods/issues" issues no || true
   fetch aBER0724/herdr-git-changes && copy_dir "$TMP/herdr-git-changes/mods/git-changes" git-changes no || true
   fetch GaganSD/coding-agent-toolkit && copy_dir "$TMP/coding-agent-toolkit/herdr-insights/mods/insights" insights no || true
-  if fetch o101k/herdr-lazygit && copy_dir "$TMP/herdr-lazygit/mods/lazygit-panel" lazygit-panel no; then
-    # lazygit-panel only acts inside its own "lazygit" layout; let it act in onyx-git too,
-    # and put its terminal block back whenever the app drops it (upstream only heals a missing panel).
-    sed -i.bak -e 's/shared("layout") === "lazygit"/["lazygit", "onyx-git"].includes(shared("layout"))/' \
-      -e 's/shared("layout") !== "lazygit"/!["lazygit", "onyx-git"].includes(shared("layout"))/' \
-      -e 's/if (onLazygit \&\& !panel) this.heal(root);/if (onLazygit \&\& (!panel || !find(root, TERM))) this.heal(root);/' \
-      "$HOME_DIR/mods/lazygit-panel/main.js" && rm -f "$HOME_DIR/mods/lazygit-panel/main.js.bak"
-    [ "$(grep -c 'onyx-git\|find(root, TERM))) this.heal' "$HOME_DIR/mods/lazygit-panel/main.js")" -ge 3 ] || say "WARN   lazygit-panel changed upstream: the Lazygit panel may stay empty in onyx-git"
-  fi
   # herdr-github installs as "gh-prs": the name "github" is often taken.
   if fetch mrolafsson/herdr-github && copy_dir "$TMP/herdr-github/app/mods/github" gh-prs no; then
     sed -i.bak 's#mods/github/icons#mods/gh-prs/icons#' "$HOME_DIR/mods/gh-prs/look.js"
@@ -72,12 +63,11 @@ PY
 if command -v herdr-app >/dev/null; then
   echo "Checking mods:"
   for m in onyx-tabs onyx-spaces onyx-status onyx-quota onyx-prs t3-agents t3-chrome t3-focus t3-pane t3-new-menu \
-           issues git-changes insights lazygit-panel gh-prs; do
+           issues git-changes insights gh-prs; do
     [ -d "$HOME_DIR/mods/$m" ] && { herdr-app check "$HOME_DIR/mods/$m" >/dev/null 2>&1 && say "ok     $m" || say "FAILED $m (herdr-app check $HOME_DIR/mods/$m)"; }
   done
 fi
 
 command -v quota-axi >/dev/null || echo "Note: the quota strip needs quota-axi → npm install -g quota-axi"
-command -v lazygit >/dev/null || echo "Note: the Lazygit panel needs lazygit → brew install lazygit"
 command -v gh >/dev/null || echo "Note: Issues and PRs need the GitHub CLI → brew install gh && gh auth login"
 echo "Done. Switch with: herdr-app do layout.switch --name onyx-git"

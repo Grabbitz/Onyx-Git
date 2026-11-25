@@ -179,8 +179,6 @@ export default class Tabs extends View {
         }))
         .child(panelButton("issues", "Issues", "data/issues/icons/issue.svg")))
       .child(sep())
-      // Lazygit, in the side panel.
-      .when(Boolean(find(root, "lazygit")), el => el.child(panelButton("lazygit", "Lazygit", "mods/git-changes/icons/branch.svg")))
       // Insights opens as a tab: one per space, focused if already open.
       .child(tool("insights-open", "Insights", "mods/insights/insights.svg",
         ps.some(p => p.mod === "insights" && p.focused), () => {

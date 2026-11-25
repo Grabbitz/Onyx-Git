@@ -185,33 +185,9 @@
                       "content": {
                         "mod": "issues"
                       }
-                    },
-                    {
-                      "id": "lazygit",
-                      "type": "column",
-                      "children": [
-                        {
-                          "id": "lazygit-bar",
-                          "type": "block",
-                          "content": {
-                            "mod": "lazygit-panel"
-                          },
-                          "size": {
-                            "px": 30
-                          }
-                        },
-                        {
-                          "id": "lazygit-term",
-                          "type": "block",
-                          "hidden": true,
-                          "content": {
-                            "terminal": "none"
-                          }
-                        }
-                      ]
                     }
                   ],
-                  "active": "lazygit"
+                  "active": "files"
                 }
               ],
               "size": {

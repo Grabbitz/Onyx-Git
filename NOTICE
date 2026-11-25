@@ -12,7 +12,7 @@ This repository includes or derives from:
 - mods/onyx-status/branch.svg — Herdr App's shipped workspace-chrome icon (Apache-2.0).
 
 Not included, fetched by install.sh from their authors' repositories at install time:
-issues (jankeesvw/herdr-issues), lazygit-panel (o101k/herdr-lazygit),
+issues (jankeesvw/herdr-issues),
 git-changes (aBER0724/herdr-git-changes), insights (GaganSD/coding-agent-toolkit),
 gh-prs (mrolafsson/herdr-github). Their own licenses apply.
 
